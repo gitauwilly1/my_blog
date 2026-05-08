@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
+{% load static %}
 {% block title %} Home {% endblock %}
 
 {% block content %}
-    <h1>Welcome to my blog!</h1>
-    <p>Hello, {{ name }}!</p>
+    <h1>Hello {{name}}</h1>
+    <img src="{% static 'images/django-img.jpg' %}" alt="Django Logo" class="w-64 h-auto mt-4">
 {% endblock %}

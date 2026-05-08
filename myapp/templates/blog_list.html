@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<h1 class="text-3xl font-bold mb-10 text-center mt-6">Blog List</h1>
+<div class="container  grid grid-cols-1 sm:grid-cols-2 gap-8">
+    {% for blog in blogs %}
+
+    <div class="border p-4 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold">{{blog.title}}</h2>
+        <p class="text-gray-600">{{blog.content}}</p>
+        <p class="text-sm text-gray-500">{{blog.published_date}}</p>
+        <p class="text-lg font-medium">By {{blog.author}}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
