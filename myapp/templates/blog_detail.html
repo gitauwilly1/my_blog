@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <!-- Back Button -->
+    <a href="{% url 'blogs' %}" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-8 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to blogs
+    </a>
+
+    <!-- Blog Header -->
+    <article class="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl shadow-slate-950/30 backdrop-blur">
+        <!-- Published Date and Category -->
+        <div class="flex items-center justify-between gap-3 text-sm font-medium uppercase tracking-[0.2em] text-slate-400 mb-6">
+            <span>Published {{ blog.published_date }}</span>
+            <span class="rounded-full bg-amber-400/10 px-4 py-1 text-amber-200">Blog</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-5xl font-bold tracking-tight text-white mb-4">{{ blog.title }}</h1>
+
+        <!-- Author Info -->
+        <div class="flex items-center gap-4 pb-6 border-b border-white/10 text-slate-300">
+            <div>
+                <p class="font-semibold text-white">By {{ blog.author }}</p>
+                <p class="text-sm text-slate-400">Published on {{ blog.published_date }}</p>
+            </div>
+        </div>
+
+        <!-- Featured Image -->
+        {% if blog.image %}
+            <div class="my-8">
+                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full rounded-2xl object-cover max-h-96">
+            </div>
+        {% endif %}
+
+        <!-- Content -->
+        <div class="prose prose-invert max-w-none mt-8 mb-8">
+            <div class="text-base leading-8 text-slate-300 whitespace-pre-wrap">{{ blog.content }}</div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-3 pt-8 border-t border-white/10">
+            <a href="{% url 'edit-blog' blog.id %}" class="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-3 font-semibold text-white transition hover:bg-blue-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Edit
+            </a>
+            <a href="{% url 'delete-blog' blog.id %}" class="flex items-center gap-2 rounded-lg bg-red-500 px-6 py-3 font-semibold text-white transition hover:bg-red-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+                Delete
+            </a>
+        </div>
+    </article>
+
+    <!-- Related Posts -->
+    <div class="mt-12">
+        <h2 class="text-2xl font-bold text-white mb-6">More from this author</h2>
+        <!-- Add more posts logic here if needed -->
+    </div>
+</div>
+
+{% endblock %}

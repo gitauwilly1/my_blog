@@ -1,3 +1,10 @@
-<footer>
-    <p>&copy; 2026 My Blog. All rights reserved.</p>
+<footer class="border-t border-white/10 bg-slate-950/90">
+    <div class="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <p>&copy; 2026 My Blog. Built with Django and Tailwind.</p>
+        <div class="flex flex-wrap gap-4 font-medium">
+            <a href="{% url 'blogs' %}" class="transition hover:text-white">Blogs</a>
+            <a href="{% url 'add-blog' %}" class="transition hover:text-white">Add Blog</a>
+            <a href="{% url 'subscribe' %}" class="transition hover:text-white">Subscribe</a>
+        </div>
+    </div>
 </footer>

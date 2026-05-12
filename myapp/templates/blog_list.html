@@ -1,18 +1,51 @@
 {% extends "base.html" %}
-{% block title %} Home {% endblock %}
+{% block title %}Blogs{% endblock %}
 
 {% block content %}
-<h1 class="text-3xl font-bold mb-10 text-center mt-6">Blog List</h1>
-<div class="container  grid grid-cols-1 sm:grid-cols-2 gap-8">
-    {% for blog in blogs %}
-
-    <div class="border p-4 rounded-lg shadow-md">
-        <h2 class="text-2xl font-semibold">{{blog.title}}</h2>
-        <p class="text-gray-600">{{blog.content}}</p>
-        <p class="text-sm text-gray-500">{{blog.published_date}}</p>
-        <p class="text-lg font-medium">By {{blog.author}}</p>
+<section class="space-y-8">
+    <div class="max-w-3xl">
+        <p class="mb-3 inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-4 py-1 text-sm font-medium text-amber-200">Latest posts</p>
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">A cleaner space for every blog post.</h1>
+        <p class="mt-4 max-w-2xl text-base leading-7 text-slate-300">Browse the latest posts, check the author and publish date, and jump into the add form when you want to publish something new.</p>
     </div>
-    {% endfor %}
-</div>
+
+    {% if blogs %}
+        <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {% for blog in blogs %}
+                <article class="group rounded-3xl border border-white/10 bg-white/5 p-6 shadow-xl shadow-slate-950/30 backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-amber-400/30 hover:bg-white/10">
+                    <div class="mb-4 flex items-center justify-between gap-3 text-xs font-medium uppercase tracking-[0.2em] text-slate-400">
+                        <span>Published</span>
+                        <span>{{ blog.published_date }}</span>
+                    </div>
+                    <h2 class="text-2xl font-semibold tracking-tight text-white">{{ blog.title }}</h2>
+                    {% if blog.image %}
+                        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="mt-4 rounded-lg object-cover w-full h-40">
+                    {% endif %}
+                    <p class="mt-4 text-sm leading-7 text-slate-300">{{ blog.content|truncatewords:28 }}</p>
+                        
+                    <div class="mt-6 flex flex-col gap-3 border-t border-white/10 pt-4">
+                        <div class="flex items-center justify-between gap-3 text-sm text-slate-400">
+                            <span>By {{ blog.author }}</span>
+                            <span class="rounded-full bg-amber-400/10 px-3 py-1 text-amber-200">Blog</span>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 pt-2">
+                            <a href="{% url 'blog-detail' blog.id %}" class="flex-1 rounded-lg bg-amber-400 px-3 py-2 text-center text-xs font-semibold text-slate-950 transition hover:bg-amber-300">View</a>
+                            <a href="{% url 'edit-blog' blog.id %}" class="flex-1 rounded-lg bg-blue-500 px-3 py-2 text-center text-xs font-semibold text-white transition hover:bg-blue-600">Edit</a>
+                            <a href="{% url 'delete-blog' blog.id %}" class="flex-1 rounded-lg bg-red-500 px-3 py-2 text-center text-xs font-semibold text-white transition hover:bg-red-600">Delete</a>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="rounded-3xl border border-dashed border-white/15 bg-white/5 p-10 text-center text-slate-300">
+            <h2 class="text-2xl font-semibold text-white">No posts yet</h2>
+            <p class="mt-3">Be the first to publish a post from the add blog form.</p>
+            <a href="{% url 'add-blog' %}" class="mt-6 inline-flex rounded-full bg-amber-400 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-300">Add your first post</a>
+        </div>
+    {% endif %}
+</section>
 
 {% endblock %}

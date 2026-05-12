@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from decouple import config 
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mj^k9-mxyr&%!#ecgdi=@oc&$q8p&g+2gz8i@g8!&-4a7m5!gw'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'debug_toolbar',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -93,13 +99,19 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.postgresql',
-		'NAME': 'blog_db',
-		'USER': 'gitz',
-		'PASSWORD': '2002will',
-		'HOST': 'localhost',
-		'PORT': '5432',
+		'NAME': config('DATABASE_NAME'),
+		'USER': config('DATABASE_USER'),
+		'PASSWORD': config('DATABASE_PASSWORD'),
+		'HOST': config('DATABASE_HOST'),
+		'PORT': config('DATABASE_PORT'),
 	}
 }
+
+cloudinary.config(
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET'),
+    cloud_name=config('CLOUDINARY_CLOUD_NAME')
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

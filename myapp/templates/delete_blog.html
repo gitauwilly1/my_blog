@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Delete Blog - {{ blog.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Back Button -->
+    <a href="{% url 'blog-detail' blog.id %}" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-8 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back
+    </a>
+
+    <!-- Delete Confirmation -->
+    <div class="rounded-3xl border border-red-500/20 bg-red-500/5 p-8 shadow-xl shadow-slate-950/30 backdrop-blur">
+        <div class="flex items-center gap-4 mb-6">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-500/20">
+                <svg class="h-6 w-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 4v2M9 3h6a2 2 0 012 2v18a2 2 0 01-2 2H9a2 2 0 01-2-2V5a2 2 0 012-2z"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold text-white">Delete Blog Post</h1>
+                <p class="text-slate-400 mt-1">This action cannot be undone</p>
+            </div>
+        </div>
+
+        <!-- Blog Preview -->
+        <div class="mb-8 rounded-2xl border border-white/10 bg-white/5 p-6">
+            <h3 class="text-xl font-semibold text-white">{{ blog.title }}</h3>
+            <p class="mt-2 text-sm text-slate-400">By {{ blog.author }}</p>
+            {% if blog.image %}
+                <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="mt-4 rounded-lg object-cover w-full h-40">
+            {% endif %}
+            <p class="mt-4 text-sm text-slate-300 line-clamp-3">{{ blog.content }}</p>
+        </div>
+
+        <!-- Warning Message -->
+        <div class="mb-8 rounded-lg border border-orange-500/30 bg-orange-500/10 p-4">
+            <p class="text-sm text-orange-200">
+                <strong>Warning:</strong> Deleting this blog post will permanently remove it from the system. All associated data will be lost.
+            </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <form method="POST" class="flex gap-4">
+            {% csrf_token %}
+            <a href="{% url 'blog-detail' blog.id %}" class="flex-1 rounded-lg border border-white/20 px-6 py-3 text-center font-semibold text-white transition hover:bg-white/5">
+                Cancel
+            </a>
+            <button type="submit" class="flex-1 rounded-lg bg-red-500 px-6 py-3 font-semibold text-white transition hover:bg-red-600">
+                Yes, Delete Permanently
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
