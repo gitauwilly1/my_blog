@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'myapp',
     'debug_toolbar',
     'cloudinary',
+    'django_registration',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login/'
+LOGOUT_REDIRECT_URL = 'login'
