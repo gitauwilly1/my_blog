@@ -1,21 +1,40 @@
-<nav class="bg-gray-900 py-4">
-    <div class="container mx-auto">
+<nav class="bg-gray-900 text-white px-6 py-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="{% url 'index' %}" class="text-xl font-bold">My Site</a>
+        
         <ul class="flex space-x-6">
-            <li><a href="{% url 'index' %}" class="text-white hover:text-gray-300">Home</a></li>
-            <li><a href="{% url 'about' %}" class="text-white hover:text-gray-300">About</a></li>
-            <li><a href="{% url 'contact' %}" class="text-white hover:text-gray-300">Contact</a></li>
-            <li><a href="{% url 'blogs' %}" class="text-white hover:text-gray-300">Blogs</a></li>
-            <li><a href="{% url 'add-blog' %}" class="text-white hover:text-gray-300">Add Blog</a></li>
             {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}" class="hover:text-gray-300">{{ user.email }}</a></li>
                 <li>
-                  <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="text-white hover:text-gray-300">Logout</button>
-                  </form>
+                    <form action="{% url 'logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="hover:text-gray-300">Logout</button>
+                    </form>
                 </li>
             {% else %}
-                <li><a href="{% url 'login' %}" class="text-white hover:text-gray-300">Login</a></li>
+                <li><a href="{% url 'login' %}" class="hover:text-gray-300">Login</a></li>
+                <li><a href="{% url 'register' %}" class="hover:text-gray-300">Register</a></li>
             {% endif %}
         </ul>
     </div>
 </nav>
+
+{% for message in messages %}
+    {% with tags=message.tags|default:'info' %}
+        {% if tags == 'error' %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md m-4">
+                {{ message }}
+            </div>
+        {% elif tags == 'success' %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md m-4">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded-md m-4">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endfor %}
+
+{% block content %}{% endblock %}

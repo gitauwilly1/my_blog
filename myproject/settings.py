@@ -46,6 +46,14 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'cloudinary',
     'django_registration',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_static',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -151,13 +161,44 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = 'login/'
+# Set custom user model
+AUTH_USER_MODEL = 'myapp.CustomUser'
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'myapp.backends.CustomEmailBackend',
+]
+
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'grayshawn461@gmail.com'
-EMAIL_HOST_PASSWORD = '2002will'
+
+# Email configuration
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+SITE_ID = 1
+
+# Allauth settings
+ACCOUNT_LOGIN_METHODS = ('email',)
+ACCOUNT_SIGNUP_FIELDS = ('email*', 'password1*', 'password2*')
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        
+    }
+}
+
+# OTP Settings
+OTP_TOTP_ISSUER = 'My App'
+OTP_LOGIN_URL = '/accounts/login/'
